@@ -1,0 +1,23 @@
+SET HEADING OFF
+SET PAGESIZE 0
+SET ECHO OFF
+SET FEEDBACK OFF
+SET TRIMSPOOL ON
+SET COLSEP ','
+
+SPOOL num_naver_target.csv
+
+CREATE TABLE NUM_NAVER_TARGET AS
+SELECT 년도수,
+       COUNT(*) AS "COUNT"
+FROM
+    (SELECT CASE
+                WHEN TRUNC(MONTHS_BETWEEN(SYSDATE, ENROLL_DT) / 12) >= 10 THEN '10년 이상'
+                WHEN TRUNC(MONTHS_BETWEEN(SYSDATE, ENROLL_DT) / 12) >= 5 THEN '5년 이상'
+                ELSE '5년 이하'
+            END AS 년도수
+    FROM CUSTOMER
+    WHERE EMAIL LIKE '%naver.com%') subquery
+GROUP BY 년도수;
+
+SPOOL OFF

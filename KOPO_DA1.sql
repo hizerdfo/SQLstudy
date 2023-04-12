@@ -1,0 +1,225 @@
+
+SET PAGESIZE 0
+SET FEEDBACK OFF
+SET HEADING OFF
+SET TRIMSPOOL ON
+SET COLSEP ','
+
+SPOOL C:\Users\DA\SQL\fileoutput.csv
+
+SELECT EMPNO, ENAME, JOB, SAL, DEPTNO FROM EMP;
+
+SPOOL OFF
+
+SELECT USER FROM DUAL;
+
+SELECT * FROM EMP WHERE SAL = '3000';
+
+SELECT ENAME, JOB, SAL, DEPTNO FROM EMP WHERE DEPTNO = 10 AND SAL > 2000;
+SELECT ENAME, JOB, SAL, DEPTNO FROM EMP WHERE SAL > 2000;
+SELECT ENAME, JOB, SAL, DEPTNO FROM EMP WHERE SAL > 2000 OR SAL > 2000;
+
+SELECt ENAME, EMPNO, SAL, COMM FROM EMP;
+SELECt ENAME, LOWEr(ENAME), UPPER(LOWER(ENAME)),LENGTH(ENAME),ABS(SAL-EMPNO),COMM FROM EMP;
+SELECt ENAME, substr(ENAME,1,3) FROM EMP
+WHERE HIREDATE between to_date('81/01/01','RR/MM/DD')and to_date('82/12/31','RR/MM/DD')ORDER BY length(ENAME);
+
+SELECT AVG(SAL), SUM(SAL), SUM(COMM), COUNT(*) FROM EMP;
+SELECT DEPTNO, COUNT(*), SUM(SAL), AVG(SAL) FROM EMP GROUP BY DEPTNO;
+
+SELECT DEPTNO, JOB, COUNT(*), SUM(SAL), AVG(SAL) FROM EMP
+GROUP BY DEPTNO, JOB
+ORDER BY DEPTNO, JOB;
+
+SELECT ENAME, lower(ENAME), upper(ENAME), initcap(ENAME) FROM EMP;
+
+SELECT ENAME, substr(ENAME,1,3), substr(ENAME,4), substr(ENAME,-3,2) FROM EMP;
+SELECT ENAME, instr(ENAME,'A'),instr(ENAME,'A',2), instr(ENAME,'A',1,2) FROM EMP;
+SELECT ENAME, rpad(ENAME,10,''),rpad(ENAME,10),rpad(ENAME,10,'*'),lpad(ENAME,10,'*+')FROM EMP;
+SELECT length(rpad('X',1000,'X')),rpad('X',1000,'X')FROM DUAL;
+SELECT ENAME, REPLACE(ENAME,'S','s') FROM EMP;
+SELECT ENAME, concat(ENAME,JOB), ENAME||JOB FROM EMP;
+
+SELECT ltrim(' ¥Î«—πŒ±π '), rtrim(' ¥Î«—πŒ±π '),trim(' 'from ' ¥Î«—πŒ±π '), trim('*' from '**¥Î«—πŒ±π**') FROM dual;
+SELECT trim('¿Â'from'¿Âπﬂ¿Â'),ltrim('¿Âπﬂ¿Â','¿Â'), rtrim('¿Âπﬂ¿Â','¿Â') FROM dual;
+
+SELECT length('abcd'), substr('abcd',2,2), length('¥Î«—πŒ±π'), substr('¥Î«—πŒ±π',2,2) FROM dual;
+SELECT lengthb('abcd'),lengthb('¥Î«—πŒ±π'),substr('¥Î«—πŒ±π',2,2),substrb('¥Î«—πŒ±π',2,2) FROM dual;
+SELECT length('abcd'), vsize('abcd'), length('¥Î«—πŒ±π'), vsize('¥Î«—πŒ±π') FROM dual;
+
+SELECT length('abcd'), length('¥Î«—πŒ±π'), length('abcd'), length('¥Î«—πŒ±π') FROM dual;
+
+
+SELECT round(45.923,2), round(45.923,1), round(45.923,0), round(45.923,-1) FROM dual;
+SELECT trunc(45.923,2), trunc(45,923,1), trunc(45.923,0), trunc(45.923,-1) FROM dual;
+SELECT mod(100,3), mod(100,2) FROM dual;
+
+SELECT * FROM EMP;
+SELECT ENAME, JOB, SAL, DEPTNO,
+        CASE DEPTNO WHEN 10 THEN ROUND(SAL * 0.03)
+                    WHEN 20 THEN SAL * 0.2
+                    WHEN 30 THEN SAL * 0.1
+                    ELSE         SAL * 0.01
+                    END AS BONUS
+FROM EMP
+ORDER BY DEPTNO, BONUS desc;
+
+SELECT DEPTNO, ENAME, SAL,
+    CASE DEPTNO WHEN 10 THEN 'ten'
+                WHEN 20 THEN 'twenty'
+                WHEN 30 THEN 'thirty'
+    ELSE                     'other'
+    END DEPT_NUM
+FROM EMP
+ORDER BY DEPTNO;
+
+SELECT DEPTNO, ENAME, SAL,
+    CASE 
+    WHEN DEPTNO IN (10,20) THEN 'tentwo'
+    WHEN DEPTNO = 30 THEN 'Thirty'
+    ELSE 'Other'
+END as DEPT_NUM
+FROM EMP
+
+SELECT DEPTNO, ENAME, DECODE(DEPTNO,10,'ACCOUNTING',20,'RESEARCH','ETC') FROM EMP ORDER BY DEPTNO;
+SELECT DEPTNO, ENAME, DECODE(DEPTNO,10,'ACCOUNTING',20,'RESEARCH') FROM EMP ORDER BY DEPTNO;
+SELECT DEPTNO, ENAME, DECODE(DEPTNO,10,'ACCOUNTING',20,'RESEARCH','ETC') FROM EMP ORDER BY DEPTNO;
+
+SELECT DEPTNO, JOB, DECODE(DEPTNO, 10, DECODE(JOB,'CLERK','OK','NO'),'NO')
+FROM EMP
+ORDER BY DEPTNO, JOB;
+
+SELECT DEPTNO, JOB, DECODE((DEPTNO||JOB),(10||'CLERK'),'OK','NO')
+FROM EMP
+ORDER BY DEPTNO, JOB;
+
+SELECT DEPTNO, JOB, ENAME FROM EMP WHERE DEPTNO = 20;
+SELECT DEPTNO, JOB, ENAME FROM EMP WHERE JOB = 'CLERK';
+SELECT DEPTNO, JOB, ENAME FROM EMP WHERE DEPTNO = 20 OR JOB = 'CLERK';
+
+SELECT *FROM EMP;
+SELECT DEPTNO, ENAME, JOB, SAL,
+    CASE DEPTNO WHEN 10 THEN ROUND(SAL * 0.03)
+                WHEN 20 THEN SAL * 0.2
+                WHEN 30 THEN SAL * 0.1
+                ELSE         SAL * 0.01
+                END AS BONUS
+FROM EMP
+ORDER BY DEPTNO, BONUS desc;
+
+SELECT DEPTNO, ENAME, SAL,
+    CASE DEPTNO WHEN 10 THEN 'ten_two'
+                WHEN 20 THEN 'ten_two'
+                WHEN 30 THEN 'thirty'
+    ELSE                     'other'
+    END DEPT_NUM
+FROM EMP
+
+ORDER BY DEPTNO;
+SELECT DEPTNO, ENAME, SAL,
+    CASE
+    WHEN DEPTNO IN(10,20) THEN 'ten_two'
+    WHEN DEPTNO = 30 THEN 'thirty'
+    ELSE 'Other'
+END
+FROM EMP
+ORDER BY DEPTNO;
+SELECT * FROM EMP;
+SELECT * FROM EMP
+WHERE DEPTNO = 30
+    AND(ENAME LIKE '%A%' OR ENAME LIKE '%B%');
+    
+SELECT DEPTNO, JOB, DECODE ((DEPTNO||JOB),(10||'CLERK'),'OK','NO')
+FROM EMP
+ORDER BY DEPTNO, JOB;
+
+SELECT DEPTNO, JOB, DECODE((DEPTNO||JOB),(10||'CLERK'),'OK','NO')
+FROM EMP
+ORDER BY DEPTNO, JOB;
+
+SELECT * FROM EMP
+WHERE DEPTNO = 30
+    AND (ENAME LIKE '%A%')
+    OR ENAME IN ('%C%');
+    
+SELECT * FROM EMP
+WHERE DEPTNO = 30
+    AND ENAME LIKE '%A%'
+    OR ENAME IN '%B%';
+SELECT * FROM EMP
+WHERE DEPTNO = 30
+    AND ENAME LIKE '%A%'
+    OR ENAME IN '%B%';
+    
+SELECT * FROM EMP
+WHERE DEPTNO IN 30
+    AND ENAME LIKE '%A%'
+    OR ENAME LIKE '%B%';
+    
+SELECT DEPTNO, ENAME, JOB, SAL,
+    CASE DEPTNO WHEN 10 THEN ROUND(SAL * 0.03)
+                WHEN 20 THEN SAL * 0.2
+                WHEN 30 THEN SAL * 0.1
+                ELSE        SAL * 0.01
+        END AS BONUS
+FROM EMP
+ORDER BY DEPTNO,BONUS desc;
+
+SELECT * FROM EMP;
+SELECT DEPTNO, ENAME, JOB, SAL,
+    CASE DEPTNO WHEN 10 THEN ROUND(SAL * 0.03)
+                WHEN 20 THEN SAL * 0.2
+                WHEN 30 THEN SAL * 0.1
+                ELSE         SAL * 0.01
+    END AS BONUS
+FROM EMP
+ORDER BY DEPTNO, BONUS desc;
+
+SELECT * FROM EMP
+WHERE DEPTNO IN 30
+    AND ENAME LIKE '%A%'
+    OR ENAME LIKE '%B%';
+    
+SELECT * FROM EMP
+WHERE ENAME IN ('A','B')
+    OR ENAME LIKE '%C%';
+    
+SELECT * FROM EMP;
+SELECT *,
+    CASE 
+         WHEN ENAME IN ('%A%','%B%') THEN 'A_B'
+         WHEN ENAME LIKE('%C%') THEN 'C'
+         ELSE 'OTHER'
+        END AS ABC
+FROM EMP;
+
+SELECT sysdate, sysdate + 7, sysdate -2, sysdate + 1/24 FROM dual;
+
+SELECT deptno, ename, trunc(sysdate - hiredate)as work_day
+FROM emp
+ORDER BY deptno, work_day DESC;
+
+SELECT ename, sysdate, hiredate,
+    to_char(sysdate,'YYYY-MM-DD:HH24:MI:SS'),to_char(hiredate, 'YYYY-MM-DD:HH24:MI:SS')
+FROM emp;
+
+
+ALTER SESSION SET NLS_DATE_FORMAT ='YYYY-MM-DD-HH24:MI:SS';
+SELECT ename, sysdate, hiredate FROM emp;
+SELECT sysdate FROM dual;
+
+desc v$mystat
+select * from v$mystat;
+
+SELECT NEXT_DAY((LAST_DAY(SYSDATE)-7),6) FROM DUAL;
+
+drop table customer;
+select * from customer;
+insert into emp(empno, ename, deptno) values(9999,'OCPOK',20);
+ALTER TABLE EMP ADD( SEX CHAR(1) DEFAULT 'M');
+SELECT * FROM EMP;
+ROLLBACK;
+DESC EMP;
+ALTER TABLE EMP DROP COLUMN SEX;
+ROLLBACK;
+DESC EMP;
